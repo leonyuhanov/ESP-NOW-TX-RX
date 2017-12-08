@@ -1,6 +1,12 @@
 #include <ESP8266WiFi.h>
 extern "C" {
   #include <espnow.h>
+  #include "user_interface.h"
+}
+
+uint8_t mac[] = {0x36, 0x33, 0x33, 0x33, 0x33, 0x33};
+void initVariant() {
+  wifi_set_macaddr(STATION_IF, &mac[0]);
 }
 
 byte cnt=0;
@@ -22,15 +28,7 @@ void setup()
     
   esp_now_register_recv_cb([](uint8_t *mac, uint8_t *data, uint8_t len)
   {
-    if(data[0]==255)
-    {
-      for(cnt=0; cnt<len; cnt++)
-      {
-        Serial.print(data[cnt], DEC);
-        Serial.print("\t");
-      }
-      Serial.print("\r\n");
-    }
+      Serial.print(".\r\n");
   });
 }
 

@@ -8,4 +8,20 @@ C:\Users\YOUR_USER_NAME\AppData\Local\Arduino15\packages\esp8266\hardware\esp826
 2. Open the file C:\Users\YOUR_USER_NAME\AppData\Local\Arduino15\packages\esp8266\hardware\esp8266\2.3.0\platform.txt
 find the line that starts with "compiler.c.elf.libs" add the following(without talking marks) to the END OF THE LINE and save "-lespnow"
 
-HAVE FUN
+Things I found deep in the rabbit hole:
+- Espressif docs state that the maximum payload per frame is 250 bytes, however i found that 200 bytes is the real maximum. Anything over 200 bytes will not send
+- Broadcasting does not work in the sense that you would expect it to. In the ESP32 branch of this code, you can add 1 peer with a mac adrress of FF:FF:FF:FF:FF:FF and any data sent to that peer SHOULD theoreticaly trasnmit to ALL devices on that chanel. This is not the case on the ESP8266. You can iether add a bunch of peers and cycle though them to send the same data OR set each peers MAC address to the be the same(NOT SURE IF THIS WILL WORK) VIA:
+
+```
+ extern "C"{
+   #include <espnow.h>
+   #include "user_interface.h"
+ }
+ uint8_t mac[] = {0x36, 0x33, 0x33, 0x33, 0x33, 0x33};
+ void initVariant()
+ {
+   wifi_set_macaddr(STATION_IF, &mac[0]);
+ }
+```
+- Espressif docs state that sending data to "NULL" is also a broadcast, however this does not work iether, I suspect this is for the ESP32
+

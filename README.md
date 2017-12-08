@@ -10,7 +10,7 @@ find the line that starts with "compiler.c.elf.libs" add the following(without t
 
 Things I found deep in the rabbit hole:
 - Espressif docs state that the maximum payload per frame is 250 bytes, however i found that 200 bytes is the real maximum. Anything over 200 bytes will not send
-- Broadcasting does not work in the sense that you would expect it to. In the ESP32 branch of this code, you can add 1 peer with a mac adrress of FF:FF:FF:FF:FF:FF and any data sent to that peer SHOULD theoreticaly trasnmit to ALL devices on that chanel. This is not the case on the ESP8266. You can iether add a bunch of peers and cycle though them to send the same data OR set each peers MAC address to the be the same(NOT SURE IF THIS WILL WORK) VIA:
+- Broadcasting does not work in the sense that you would expect it to. In the ESP32 branch of this code, you can add 1 peer with a mac adrress of FF:FF:FF:FF:FF:FF and any data sent to that peer SHOULD theoreticaly trasnmit to ALL devices on that chanel. This is not the case on the ESP8266. You can iether add a bunch of peers and cycle though them to send the same data OR set each peers MAC address to the be the same VIA:
 
 ```
  extern "C"{

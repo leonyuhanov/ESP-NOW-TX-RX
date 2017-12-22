@@ -15,10 +15,11 @@ byte result;
 void setup()
 {
   Serial.begin(115200);
-  //Serial.print("\r\n\r\nDevice MAC: ");
-  //Serial.println(WiFi.macAddress());
-  //Serial.println("\r\nESP_Now Controller.");
-  WiFi.disconnect();
+  WiFi.mode(WIFI_STA);
+  WiFi.begin();
+  Serial.print("\r\n\r\nDevice MAC: ");
+  Serial.println(WiFi.macAddress());
+  Serial.println("\r\nESP_Now Controller.");
   esp_now_init();
   delay(10);
   esp_now_set_self_role(ESP_NOW_ROLE_CONTROLLER);

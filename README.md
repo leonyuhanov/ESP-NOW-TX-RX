@@ -1,6 +1,10 @@
 # ESP-NOW-TX-RX
 A very basic TX and RX demo for the ESP-NOW Protocol for the ESP8266 &amp; ESP32
 
+# DUAL Mode RX/TX on 2 devices
+DualModeMaster : Has code for a master/server that sends a PING with a 100Byte data packet to the slave and prints the time in micros for it to return
+DualModeSlave : Has code for a slave/node that waits for a PING with a 100Byte data packet and returns same
+
 # Setup Instructions FOR the ESP8266
 If you are using Arduino IDE you need to do the following before compiling:
 1. Make sure you have the LATEST espnow.h file get it form here https://github.com/esp8266/Arduino/blob/d24a358817f0c11f7087b3c8acbf24629b15998f/tools/sdk/include/espnow.h and replace what you have in 

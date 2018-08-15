@@ -10,6 +10,7 @@ DualModeSlave : Has code for a slave/node that waits for a PING with a 100Byte d
 FOR the ESP32:
 
 ESP32_DualMode_Master : Has code for a master/server that sends a PING with a 200Byte data packet to the slave and prints the time in micros for it to return
+
 ESP32_DualMode_Slave : Has code for a slave/node that waits for a PING with a 200Byte data packet and returns same
 NOTES:
 - Im using the MAC addresses of my specific ESP32 modules, you will need t modify the code for your own:

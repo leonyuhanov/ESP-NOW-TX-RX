@@ -2,8 +2,23 @@
 A very basic TX and RX demo for the ESP-NOW Protocol for the ESP8266 &amp; ESP32
 
 # DUAL Mode RX/TX on 2 devices
+FOR the ESP8266:
+
 DualModeMaster : Has code for a master/server that sends a PING with a 100Byte data packet to the slave and prints the time in micros for it to return
 DualModeSlave : Has code for a slave/node that waits for a PING with a 100Byte data packet and returns same
+
+FOR the ESP32:
+
+ESP32_DualMode_Master : Has code for a master/server that sends a PING with a 200Byte data packet to the slave and prints the time in micros for it to return
+ESP32_DualMode_Slave : Has code for a slave/node that waits for a PING with a 200Byte data packet and returns same
+NOTES:
+- Im using the MAC addresses of my specific ESP32 modules, you will need t modify the code for your own:
+- The SLAVE Node needs to be initialized as a WIFI_AP you will need ot ge tits MAC via WiFi.softAPmacAddress()
+- THE MASTER Node needs to know the SLAVE Nodes WIFI_SOFT_AP MAC address (from the above comment)
+- You will need the MASTER nodes WIFI_STA MAC address via WiFi.macAddress()
+- The SLAVE needs the MASTER nodes WIFI_STA MAC address (from above line)
+- YOU MUST indicate on the SLAVE NODE that the MASTER node is using the ESP_IF_WIFI_AP interface for ESPNOW via master.ifidx = ESP_IF_WIFI_AP; on line 38
+
 
 # Setup Instructions FOR the ESP8266
 If you are using Arduino IDE you need to do the following before compiling:

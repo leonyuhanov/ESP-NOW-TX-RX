@@ -10,10 +10,9 @@
 uint8_t masterDeviceMac[] = {0x30, 0xAE, 0xA4, 0x27, 0xA9, 0x48};
 esp_now_peer_info_t master;
 const esp_now_peer_info_t *masterNode = &master;
-const byte maxDataFrameSize = 200;
+const byte maxDataFrameSize = 250;
 uint8_t dataToSend[maxDataFrameSize];
 byte cnt=0;
-esp_err_t sendResult;
 
 void setup()
 {
@@ -58,33 +57,13 @@ void loop()
 
 void OnDataRecv(const uint8_t *mac_addr, const uint8_t *data, int data_len)
 {
-  Serial.printf("\r\nReceived\t%d Bytes\t%d", data_len, data[0]);
-  memcpy( dataToSend, data, data_len );
-  
-  sendResult = esp_now_send(master.peer_addr, dataToSend, maxDataFrameSize);
-  if (sendResult == ESP_OK) {
-    Serial.println("Success");
-  } else if (sendResult == ESP_ERR_ESPNOW_NOT_INIT) {
-    // How did we get so far!!
-    Serial.println("ESPNOW not Init.");
-  } else if (sendResult == ESP_ERR_ESPNOW_ARG) {
-    Serial.println("Invalid Argument");
-  } else if (sendResult == ESP_ERR_ESPNOW_INTERNAL) {
-    Serial.println("Internal Error");
-  } else if (sendResult == ESP_ERR_ESPNOW_NO_MEM) {
-    Serial.println("ESP_ERR_ESPNOW_NO_MEM");
-  } else if (sendResult == ESP_ERR_ESPNOW_NOT_FOUND) {
-    Serial.println("Peer not found.");
-  } 
-    else if (sendResult == ESP_ERR_ESPNOW_IF) {
-    Serial.println("Interface Error.");
-  }   else {
-    Serial.printf("\r\nNot sure what happened\t%d", sendResult);
-  }
+  memcpy( dataToSend, data, data_len );  
+  esp_now_send(master.peer_addr, dataToSend, maxDataFrameSize);
+  //Serial.printf("\r\nReceived\t%d Bytes\t%d", data_len, data[0]);
 }
 
 void OnDataSent(const uint8_t *mac_addr, esp_now_send_status_t status)
 {
-  Serial.print("\r\nLast Packet Send Status:\t");
-  Serial.print(status == ESP_NOW_SEND_SUCCESS ? "Delivery Success" : "Delivery Fail");
+  //Serial.print("\r\nLast Packet Send Status:\t");
+  //Serial.print(status == ESP_NOW_SEND_SUCCESS ? "Delivery Success" : "Delivery Fail");
 }

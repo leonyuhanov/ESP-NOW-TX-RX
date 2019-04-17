@@ -7,11 +7,13 @@
 
 #define WIFI_CHANNEL 1
 esp_now_peer_info_t slave;
-uint8_t remoteMac[] = {0x30, 0xAE, 0xA4, 0x27, 0xCE, 0xAD};
-const uint8_t maxDataFrameSize=200;
+//30:AE:A4:21:B4:89
+uint8_t remoteMac[] = {0x30, 0xAE, 0xA4, 0x21, 0xB4, 0x89};
+const uint8_t maxDataFrameSize=250;
 const esp_now_peer_info_t *peer = &slave;
 uint8_t dataToSend[maxDataFrameSize];
 byte cnt=0;
+long timers[3];
 
 void setup()
 {
@@ -51,22 +53,32 @@ void loop()
   }
   if( esp_now_send(slave.peer_addr, dataToSend, maxDataFrameSize) == ESP_OK)
   {
-    Serial.printf("\r\nSuccess Sent Value->\t%d", dataToSend[0]);
+    timers[0] = micros();
+    //Serial.printf("\r\nSuccess Sent Value->\t%d", dataToSend[0]);
   }
   else
   {
-    Serial.printf("\r\nDID NOT SEND....");
+    Serial.printf(".");
   }
-  delay(250);
+  delay(10);
 }
 
 void OnDataSent(const uint8_t *mac_addr, esp_now_send_status_t status)
 {
-  Serial.print("\r\nLast Packet Send Status:\t");
-  Serial.print(status == ESP_NOW_SEND_SUCCESS ? "Delivery Success" : "Delivery Fail");
+  //Serial.print("\r\nLast Packet Send Status:\t");
+  //Serial.print(status == ESP_NOW_SEND_SUCCESS ? "Delivery Success" : "Delivery Fail");
 }
 
 void OnDataRecv(const uint8_t *mac_addr, const uint8_t *data, int data_len)
 {
-  Serial.printf("\r\nReceived\t%d Bytes\t%d", data_len, data[0]);
+  if(data[0] == dataToSend[0])
+  {
+    timers[1] = micros();
+    timers[2] = timers[1]-timers[0];
+    Serial.printf("\r\nReceived\t%d Bytes val\t%d\tin %d micros", data_len, data[0], timers[2]);
+  }
+  else
+  {
+    Serial.printf("\r\nReceived\t%d Bytes\t%d", data_len, data[0]);
+  }
 }

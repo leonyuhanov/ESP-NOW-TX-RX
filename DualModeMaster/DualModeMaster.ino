@@ -2,18 +2,25 @@
 
   Master/Server:
     Sends a 100Byte ESPNOW data block, and awaits a response
-    SLAVE ADDRESS[84:F3:EB:B3:66:CC]
-    SELF=68:C6:3A:9F:77:88
+    SLAVE ADDRESS[0x3C,0x3C,0x3C,0x3C,0x3C,0x31]
+    SELF=0x3C,0x3C,0x3C,0x3C,0x3C,0x30
  */
-#include <ESP8266WiFi.h>
 extern "C" {
+  #include "user_interface.h"
   #include <espnow.h>
 }
+uint8_t deviceMACAddress[] = {0x3C,0x3C,0x3C,0x3C,0x3C,0x30};
+void initVariant()
+{
+   wifi_set_opmode(STATIONAP_MODE);
+   wifi_set_macaddr(STATION_IF, &deviceMACAddress[0]);
+}
 
+#include <ESP8266WiFi.h>
 #define WIFI_CHANNEL 1
 
 //MAC ADDRESS OF THE DEVICE YOU ARE SENDING TO
-byte remoteDevice[6] = {0x84, 0xF3, 0xEB, 0xB3, 0x66, 0xCC};
+byte remoteDevice[6] = {0x3C,0x3C,0x3C,0x3C,0x3C,0x31};
 const byte dataLength=100;
 byte cnt=0;
 byte txrxData[dataLength];
@@ -22,10 +29,10 @@ long timerData[3];
 void setup()
 {
   Serial.begin(115200);
-  //Serial.print("\r\n\r\nDevice MAC: ");
+  Serial.print("\r\n\r\nDevice MAC: ");
   //WiFi.mode(WIFI_STA);
   //WiFi.begin();
-  //Serial.println(WiFi.macAddress());
+  Serial.println(WiFi.macAddress());
   Serial.println("\r\nESP_Now Dual Mode Transmitter + Receiver [MASTER].\r\n");
   esp_now_init();
   delay(10);
@@ -49,4 +56,3 @@ void loop()
   delay(500);
   txrxData[0]++;
 }
-

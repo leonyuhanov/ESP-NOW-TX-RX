@@ -4,9 +4,9 @@ A very basic TX and RX demo for the ESP-NOW Protocol for the ESP8266 &amp; ESP32
 # DUAL Mode RX/TX on 2 devices
 FOR the ESP8266:
 
-DualModeMaster : Has code for a master/server that sends a PING with a 100Byte data packet to the slave and prints the time in micros for it to return
+DualModeMaster : Has code for a master/server that sends a PING with a 200Byte data packet to the slave and prints the time in micros for it to return
 
-DualModeSlave : Has code for a slave/node that waits for a PING with a 100Byte data packet and returns same
+DualModeSlave : Has code for a slave/node that waits for a PING with a 200Byte data packet and returns same
 
 FOR the ESP32:
 

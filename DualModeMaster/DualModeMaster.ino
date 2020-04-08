@@ -21,11 +21,12 @@ void initVariant()
 
 //MAC ADDRESS OF THE DEVICE YOU ARE SENDING TO
 byte remoteDevice[6] = {0x3C,0x3C,0x3C,0x3C,0x3C,0x31};
-const byte dataLength=100;
+const byte dataLength=200;
 byte cnt=0;
 byte txrxData[dataLength];
 long timerData[3];
 long minRTT=100000, maxRTT=0, acumRTT=0, rTTCnt=0;
+uint32_t sentTime=0, receivedTime=0, timeTaken=0;
 
 void setup()
 {
@@ -42,33 +43,37 @@ void setup()
 
   esp_now_register_recv_cb([](uint8_t *mac, uint8_t *data, uint8_t len)
   {
-    timerData[1] = micros();
-    timerData[2] = timerData[1]-timerData[0];
-    //printf("\r\nDATA RECEIVED\t\t0x%x\n", (*(volatile uint32_t *)(0x3ff20c00)));
-    Serial.printf("\tReceived [%d]\tTook\t[%d]micros\r\n", data[0], timerData[2]);
+    //timerData[1] = micros();
+    //timerData[2] = timerData[1]-timerData[0];
+    receivedTime = (*(volatile uint32_t *)(0x3ff20c00));
+    timeTaken = receivedTime-sentTime;
+    //Serial.printf("\tReceived [%d]\tTook\t[%d]micros\r\n", data[0], timerData[2]);
+    Serial.printf("\tReceived [%d]\tTook\t[%d]micros\r\n", data[0], timeTaken);
     memcpy(txrxData, data, len );
   });
 }  
 
 void loop()
 {
-  timerData[0] = micros();
-  //printf("\r\nABOUT TO SEND\t\t0x%x\n", (*(volatile uint32_t *)(0x3ff20c00)));
+  //timerData[0] = micros();
+  sentTime =  (*(volatile uint32_t *)(0x3ff20c00));
   esp_now_send(remoteDevice, txrxData, dataLength);
   Serial.printf("\tSent [%d]\r\n", txrxData[0]);
   delay(500);
 
   //analytics
   rTTCnt++;
-  if(minRTT>timerData[2])
+  //if(minRTT>timerData[2])
+  if(minRTT>timeTaken)
   {
-    minRTT = timerData[2];
+    minRTT = timeTaken;
   }
-  if(maxRTT<timerData[2])
+  //if(maxRTT<timerData[2])
+  if(maxRTT<timeTaken)
   {
-    maxRTT = timerData[2];
+    maxRTT = timeTaken;
   }
-  acumRTT+=timerData[2];
+  acumRTT+=timeTaken;
   printf("\t\tMinRTT\t%d\tMaxRTT\t%d\tAVG RTT\t%d\r\n", minRTT, maxRTT, acumRTT/rTTCnt);
   //analytics
 

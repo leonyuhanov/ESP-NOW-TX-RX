@@ -20,7 +20,7 @@ void initVariant()
 #define WIFI_CHANNEL 1
 //MAC ADDRESS OF THE DEVICE YOU ARE SENDING TO
 byte remoteDevice[6] = {0x3C,0x3C,0x3C,0x3C,0x3C,0x30};
-const byte dataLength=100;
+const byte dataLength=200;
 byte cnt=0;
 byte rcvData[dataLength];
 long timerData[3];

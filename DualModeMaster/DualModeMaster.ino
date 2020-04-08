@@ -43,6 +43,7 @@ void setup()
   {
     timerData[1] = micros();
     timerData[2] = timerData[1]-timerData[0];
+    printf("\r\nDATA RECEIVED\t\t0x%x\n", (*(volatile uint32_t *)(0x3ff20c00)));
     Serial.printf("\tReceived [%d]\tTook\t[%d]micros\r\n", data[0], timerData[2]);
     memcpy(txrxData, data, len );
   });
@@ -51,6 +52,7 @@ void setup()
 void loop()
 {
   timerData[0] = micros();
+  printf("\r\nABOUT TO SEND\t\t0x%x\n", (*(volatile uint32_t *)(0x3ff20c00)));
   esp_now_send(remoteDevice, txrxData, dataLength);
   Serial.printf("\tSent [%d]\r\n", txrxData[0]);
   delay(500);

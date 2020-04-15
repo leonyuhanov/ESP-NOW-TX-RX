@@ -49,3 +49,5 @@ find the line that starts with "compiler.c.elf.libs" add the following(without t
 
 - ESP-Now Seems to work between devices. I have testes an ESP8266 as a TX to an ESP32 as an RX, but there seemed to be iether dropped frames or delays in receiveing frames
 
+For the ESP32 read 
+https://github.com/espressif/esp-idf/issues/3238 for very detailed explanantion of espnow speeds and ways to controll them using the espidf example code here https://github.com/leonyuhanov/ESP32_ESPIDF_ESPNOW

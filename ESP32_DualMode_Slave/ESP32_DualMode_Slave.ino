@@ -34,7 +34,7 @@ void setup()
   memcpy( &master.peer_addr, &masterDeviceMac, 6 );
   master.channel = WIFI_CHANNEL;
   master.encrypt = 0;
-  master.ifidx = ESP_IF_WIFI_AP;
+  master.ifidx = WIFI_IF_AP;
   //Add the remote master node to this slave node
   if( esp_now_add_peer(masterNode) == ESP_OK)
   {

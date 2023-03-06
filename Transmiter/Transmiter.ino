@@ -16,7 +16,7 @@ void setup()
 {
   Serial.begin(115200);
   WiFi.mode(WIFI_STA);
-  WiFi.begin();
+  //WiFi.begin();
   Serial.print("\r\n\r\nDevice MAC: ");
   Serial.println(WiFi.macAddress());
   Serial.println("\r\nESP_Now Controller.");
